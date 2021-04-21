@@ -5,7 +5,7 @@
    "username": "martin",
    "password": "password",
    "database": "typeorm_test",
-   "synchronize": true,
+   "__synchronize__": true,
    "logging": false,
    "entities": [
       "src/entity/**/*.ts"
@@ -13,6 +13,7 @@
    "migrations": [
       "src/migration/**/*.ts"
    ],
+   "migrationsTableName": "custom_migration_table",
    "subscribers": [
       "src/subscriber/**/*.ts"
    ],

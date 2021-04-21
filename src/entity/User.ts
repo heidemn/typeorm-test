@@ -8,7 +8,7 @@ export class User {
 
     @Column()
     @Generated("uuid")
-    uuid: string;
+    uuid2: string;
 
     @Column()
     firstName: string;
