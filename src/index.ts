@@ -6,7 +6,30 @@ import {User} from "./entity/User";
 // mysql> CREATE USER 'martin'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
 // mysql> GRANT all privileges on *.* to 'martin'@'%';
 
-createConnection().then(async connection => {
+async function sleep(msec) {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, msec)
+    });
+}
+
+async function connectRetry() {
+    for (let i = 0; ; i++) {
+        try {
+            return await createConnection();
+        }
+        catch (e) {
+            if (i < 4) {
+                console.error(e.message);
+                console.error("Retrying...");
+                await sleep((i+1) * 1000);
+            } else {
+                throw e;
+            }
+        }
+    }
+}
+
+connectRetry().then(async connection => {
     let userRepository = connection.getRepository(User);
 
     console.log("Inserting a new user into the database...");
@@ -25,4 +48,7 @@ createConnection().then(async connection => {
 
     console.log("Here you can setup and run express/koa/any other framework.");
 
-}).catch(error => console.log(error));
+}).catch(error => {
+    console.log(error);
+    process.exit(1);
+});

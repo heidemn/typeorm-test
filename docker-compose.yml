@@ -1,0 +1,16 @@
+version: "3.3"
+services:
+  typeorm-test:
+    restart: on-failure
+    build: .
+    environment:
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: password
+  mysql:
+    restart: on-failure
+    image: "mysql:8.0"
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    environment:
+      MYSQL_DATABASE: typeorm_test
+      MYSQL_ROOT_PASSWORD: password
